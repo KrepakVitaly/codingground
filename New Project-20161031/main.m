@@ -56,6 +56,7 @@ int main (int argc, const char * argv[])
    
    for(NSString *element in lines)
    {  
+   
       [block_x removeAllObjects];
       //NSLog (@"String processing");
       // Читаем строку целых чисел, разделенных пробелами и формируем массив чисел
@@ -78,7 +79,7 @@ int main (int argc, const char * argv[])
       //Упорядочиваем массив
       NSArray *sorted_Array = [block_x sortedArrayUsingSelector:@selector(compare:)];
       CyclicBuffer * sorted_buffer = [[CyclicBuffer alloc] initWithNSMutableArray:block_x];
-      block_sort(sorted_buffer, INT_MAX, INT_MIN);
+      block_sort(sorted_buffer, 3, -4);
       
       //NSLog (@"Sorting String processing");
     //   for(NSNumber* num in sorted_Array)
@@ -115,14 +116,16 @@ int main (int argc, const char * argv[])
 
 void block_sort (CyclicBuffer * buffer_to_sort, long int x_max, long int x_min)
 { 
+
+//   NSLog(@"addr %d ", buffer_to_sort);
   if (x_max == x_min)
     return;
   
   long int middle = (x_max + x_min + 1)/2;
-  
+  NSLog(@"asdf %d:%d     %d:%d ", x_min, middle-1, middle, x_max );
   CyclicBuffer * buffer_mins = [[CyclicBuffer alloc] init];
   CyclicBuffer * buffer_maxs = [[CyclicBuffer alloc] init];
-  
+  NSLog (@"-----------------------------------------------------------------");
   int x = 0;
   while (![buffer_to_sort isEmpty])
   {
@@ -133,20 +136,22 @@ void block_sort (CyclicBuffer * buffer_to_sort, long int x_max, long int x_min)
     else 
       [buffer_maxs push:x];
   }
-   return;
+//   return;
   
-  block_sort(buffer_mins, x_max, middle);
-  block_sort(buffer_maxs, middle-1, x_min);
+   block_sort(buffer_mins, x_max, middle);
+   block_sort(buffer_maxs, middle-1, x_min);
   
   while (![buffer_mins isEmpty])
   {
     x = [buffer_mins pop];
+    NSLog(@" %d ", x);
     [buffer_to_sort push:x];
   }
   
   while (![buffer_mins isEmpty])
   {
     x = [buffer_maxs pop];
+    NSLog(@" %d ", x);
     [buffer_to_sort push:x];
   }
    
