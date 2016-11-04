@@ -31,8 +31,9 @@
 // или единиц измерения не выводится.
 
 #import <Foundation/Foundation.h>
+#import "CyclicBuffer.h"
 
-NSArray * sort (NSMutableArray * sorting_array);
+void block_sort (CyclicBuffer * buffer_to_sort, long int x_max, long int x_min);
 
 int main (int argc, const char * argv[])
 {
@@ -65,7 +66,7 @@ int main (int argc, const char * argv[])
         // NSLog(@"string =  %@", string);
         NSNumberFormatter *f = [[NSNumberFormatter alloc] init];
         NSNumber * number_from_string = [f numberFromString: string];
-        NSNumber* numberWithInt =  [NSNumber numberWithInt:[number_from_string integerValue]];
+        NSNumber * numberWithInt =  [NSNumber numberWithInt:[number_from_string integerValue]];
         
         if (number_from_string != NULL)
         {
@@ -76,6 +77,8 @@ int main (int argc, const char * argv[])
     
       //Упорядочиваем массив
       NSArray *sorted_Array = [block_x sortedArrayUsingSelector:@selector(compare:)];
+      CyclicBuffer * sorted_buffer = [[CyclicBuffer alloc] initWithNSMutableArray:block_x];
+      block_sort(sorted_buffer, INT_MAX, INT_MIN);
       
       //NSLog (@"Sorting String processing");
     //   for(NSNumber* num in sorted_Array)
@@ -110,7 +113,41 @@ int main (int argc, const char * argv[])
    return 0;
 }
 
-NSArray * sort (NSMutableArray * sorting_array)
-{
+void block_sort (CyclicBuffer * buffer_to_sort, long int x_max, long int x_min)
+{ 
+  if (x_max == x_min)
+    return;
+  
+  long int middle = (x_max + x_min + 1)/2;
+  
+  CyclicBuffer * buffer_mins = [[CyclicBuffer alloc] init];
+  CyclicBuffer * buffer_maxs = [[CyclicBuffer alloc] init];
+  
+  int x = 0;
+  while (![buffer_to_sort isEmpty])
+  {
+    x = [buffer_to_sort pop];
+    // NSLog(@"asdf %d ", x);
+    if (x < middle)
+      [buffer_mins push:x];
+    else 
+      [buffer_maxs push:x];
+  }
    return;
+  
+  block_sort(buffer_mins, x_max, middle);
+  block_sort(buffer_maxs, middle-1, x_min);
+  
+  while (![buffer_mins isEmpty])
+  {
+    x = [buffer_mins pop];
+    [buffer_to_sort push:x];
+  }
+  
+  while (![buffer_mins isEmpty])
+  {
+    x = [buffer_maxs pop];
+    [buffer_to_sort push:x];
+  }
+   
 }
