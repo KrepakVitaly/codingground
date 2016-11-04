@@ -7,7 +7,6 @@
             int tail;
             int head;
             BOOL isEmpty;
-            BOOL isFull;
             NSMutableArray * buffer;
     }
 
@@ -15,10 +14,9 @@
 @property (readonly) int tail;
 @property (readonly) int head;
 @property (readonly) BOOL isEmpty;
-@property (readonly) BOOL isFull;
 @property (readonly) NSMutableArray * buffer;
 
-- (id)init:(int)size;
+- (id)init;
 - (id)initWithNSMutableArray:(NSMutableArray *)array;
 - (void)print;
  - (int)pop;
