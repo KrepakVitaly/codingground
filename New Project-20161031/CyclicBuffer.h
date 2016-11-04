@@ -18,7 +18,7 @@
 @property (readonly) BOOL isFull;
 @property (readonly) NSMutableArray * buffer;
 
-- (id)init;
+- (id)init:(int)size;
 - (id)initWithNSMutableArray:(NSMutableArray *)array;
 - (void)print;
  - (int)pop;
