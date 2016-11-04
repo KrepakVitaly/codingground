@@ -3,7 +3,6 @@
 
 @implementation CyclicBuffer{
         // Private instance variables
-
 }
 
 @synthesize buf_size;
@@ -29,6 +28,7 @@
     if ( (self = [super init]) ) 
     {
       isEmpty = YES;
+      isFull = NO;
       head = 0;
       tail = 0;
       buffer = [[NSMutableArray alloc] init];
@@ -44,19 +44,25 @@
 
 - (void)push:(int)x {
      [buffer insertObject:[NSNumber numberWithInteger:x] atIndex:head];
+     isEmpty = NO;
      if (head == buf_size-1)
        head = 0;
      else
        head += 1;
+     if (head == tail)
+       isFull = YES;
      return;
 }
 
 - (int)pop {
+    isFull = NO;
     NSInteger popx = [[buffer objectAtIndex:tail] intValue]; 
     if (tail != 0)
       tail -= 1;
     else
       tail = buf_size - 1;
+    if (head == tail)
+       isEmpty = YES;
     return (int) popx;
 }
 
