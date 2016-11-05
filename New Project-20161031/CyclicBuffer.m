@@ -45,7 +45,7 @@
 }
 
 - (void)push:(int)x {
-    // NSLog(@"push %d head = %d", x, head);
+    // NSLog(@"push %d head = %d addr = %d", x, head, self);
     head += 1;
     [buffer insertObject:[NSNumber numberWithInteger:x] atIndex:head];
     
@@ -53,12 +53,11 @@
 }
 
 - (int)pop {
-    // NSLog(@"pop head =  %d addr = %d", head, self);
     
-    NSInteger popx = [[buffer objectAtIndex:head] intValue];
     
-    // NSLog(@"pop %d", popx);
-    [buffer removeObjectAtIndex:head]; 
+    NSInteger popx = [[buffer objectAtIndex:0] intValue];
+    // NSLog(@"pop %d head =  %d addr = %d", popx, head, self);
+    [buffer removeObjectAtIndex:0]; 
     head -= 1;
     
     if (head == -1)
