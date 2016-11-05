@@ -79,7 +79,7 @@ int main (int argc, const char * argv[])
       //Упорядочиваем массив
     //   NSArray *sorted_Array = [block_x sortedArrayUsingSelector:@selector(compare:)];
       CyclicBuffer * sorted_buffer = [[CyclicBuffer alloc] initWithNSMutableArray:block_x];
-      block_sort(sorted_buffer, 4095, -4096);
+      block_sort(sorted_buffer, INT_MAX, INT_MIN);
     //   NSLog (@"-------------------------------------------------------------33333333333333----");
       NSMutableArray *sorted_Array = [[NSMutableArray alloc] init];
       
