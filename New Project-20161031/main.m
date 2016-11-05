@@ -77,9 +77,17 @@ int main (int argc, const char * argv[])
       }
     
       //Упорядочиваем массив
-      NSArray *sorted_Array = [block_x sortedArrayUsingSelector:@selector(compare:)];
+    //   NSArray *sorted_Array = [block_x sortedArrayUsingSelector:@selector(compare:)];
       CyclicBuffer * sorted_buffer = [[CyclicBuffer alloc] initWithNSMutableArray:block_x];
       block_sort(sorted_buffer, 4095, -4096);
+    //   NSLog (@"-------------------------------------------------------------33333333333333----");
+      NSMutableArray *sorted_Array = [[NSMutableArray alloc] init];
+      
+      while (![sorted_buffer isEmpty])
+      {
+        [sorted_Array addObject:[NSNumber numberWithInt:[sorted_buffer pop]]];
+      }
+      
       
       //NSLog (@"Sorting String processing");
     //   for(NSNumber* num in sorted_Array)
@@ -103,7 +111,7 @@ int main (int argc, const char * argv[])
 
 
    double timePassed_ms = [date timeIntervalSinceNow] * -1000.0;
-   NSLog (@"-----------------------------------------------------------------");
+//   NSLog (@"-----------------------------------------------------------------");
    NSLog (@"%f ms", timePassed_ms);
    NSLog (@"%d", proc_line_count);
    double average_length = ((float) total_str_length)/((float) proc_line_count);
@@ -130,28 +138,35 @@ void block_sort (CyclicBuffer * buffer_to_sort, long int x_max, long int x_min)
   while (![buffer_to_sort isEmpty])
   {
     x = [buffer_to_sort pop];
+    // NSLog(@" %d ", x);
     if (x < middle)
       [buffer_mins push:x];
     else 
       [buffer_maxs push:x];
   }
 //   return;
-  
-   block_sort(buffer_mins, x_max, middle);
-   block_sort(buffer_maxs, middle-1, x_min);
-  
+   if (![buffer_maxs isEmpty])
+     block_sort(buffer_maxs, x_max, middle);
+   if (![buffer_mins isEmpty])
+     block_sort(buffer_mins, middle-1, x_min);
+     
+//   NSLog(@"Concatenate start ");
+
   while (![buffer_mins isEmpty])
   {
     x = [buffer_mins pop];
     // NSLog(@" %d ", x);
     [buffer_to_sort push:x];
   }
-  
   while (![buffer_maxs isEmpty])
   {
     x = [buffer_maxs pop];
     // NSLog(@" %d ", x);
     [buffer_to_sort push:x];
   }
-   
+//   NSLog(@"Concatenate end ");
+
+
+  
+
 }
